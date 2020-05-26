@@ -18,7 +18,7 @@ spec:
           claimName: ocr
       containers:
       - name: ocr
-        image: patrickcurl/pwsh-tesseract:test3
+        image: patrickcurl/pwsh-tesseract:test
         command:
         - pwsh
         - /scripts/OCR-loop-test.ps1

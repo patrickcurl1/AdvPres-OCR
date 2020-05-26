@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocr
+spec:  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocr
+  template:
+    metadata:
+      labels:
+        app: ocr
+    spec:
+      volumes:
+      - name: ocr
+        persistentVolumeClaim:
+          claimName: ocr
+      containers:
+      - name: ocr
+        image: patrickcurl/tesseract-pwsh:latest
+        command:
+        - pwsh
+        - /scripts/OCR-loop-test.ps1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: ocr
+          mountPath: "/OCR"
+---    
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ocr
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1024Gi
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.0.158
+    path: "/export/volumes/pod/OCR"
+---    
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ocr
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1024Gi
