@@ -3,11 +3,15 @@ ARG fromTag=18.04
 ARG imageRepo=ubuntu
 ARG RELEASE=latest
 
+# Docker image file that describes an Ubuntu18.04 image with PowerShell installed from Microsoft APT Repo
+ARG fromTag=18.04
+ARG imageRepo=ubuntu
+
 #FROM ${imageRepo}:${fromTag} AS installer-env
 FROM tesseractshadow/tesseract4re:${RELEASE}
 
-ARG PS_VERSION=7.0.0-rc.1
-ARG PS_PACKAGE=powershell-preview_${PS_VERSION}-1.ubuntu.18.04_amd64.deb
+ARG PS_VERSION=6.2.0
+ARG PS_PACKAGE=powershell_${PS_VERSION}-1.ubuntu.18.04_amd64.deb
 ARG PS_PACKAGE_URL=https://github.com/PowerShell/PowerShell/releases/download/v${PS_VERSION}/${PS_PACKAGE}
 
 # Define ENVs for Localization/Globalization
@@ -40,7 +44,6 @@ RUN apt-get update \
     && locale-gen $LANG && update-locale \
     # remove powershell package
     && rm /tmp/powershell.deb \
-    && ln -sf /opt/microsoft/powershell/7-preview/pwsh /usr/bin/pwsh \
     # intialize powershell module cache
     && pwsh \
         -NoLogo \
