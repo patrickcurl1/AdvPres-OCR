@@ -1,4 +1,5 @@
 ﻿
+Set-Location /OCR
 
 $path = hostname
 If(!(test-path $path))
