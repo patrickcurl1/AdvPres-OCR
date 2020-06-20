@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ocr
+spec:  
+  replicas: 1
+  serviceName: ocr-statefulset
+  selector:
+    matchLabels:
+      app: ocr
+  template:
+    metadata:
+      labels:
+        app: ocr
+    spec:
+      volumes:
+      - name: ocr-statefulset
+        persistentVolumeClaim:
+          claimName: ocr-statefulset
+      containers:
+      - name: ocr
+        image: patrickcurl/tesseract-pwsh:latest
+        command:
+        - pwsh
+        - /OCR/statefulset.ps1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: ocr-statefulset
+          mountPath: "/OCR"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ocr-statefulset
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - vers=3.0
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: ocr-statefulset  # make sure it's a unique id
+    volumeAttributes:
+      source: "//hvcro02.advcro.local/K8s/ocr-statefulset"
+    nodeStageSecretRef:
+      name: smbcreds
+      namespace: default
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ocr-statefulset
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1024Gi
+  volumeName: ocr-statefulset
+  storageClassName: ""
