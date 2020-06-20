@@ -7,6 +7,8 @@ If(!(test-path $path))
       New-Item -ItemType Directory -Force -Path $path
 }
 
+Set-Location /OCR/$path
+
 # loop
 # grab all tif's
 # check to see if tif has pdf & text else make what is missing
