@@ -1,4 +1,14 @@
-﻿
+﻿# this script is to do OCR with Tesseract
+# the /OCR folder is a PV/PVC to SMB 3.0 share
+# the script gets a hostname of the container
+# checks to see if there is a folder that has the same name as the container
+# if not it creates the folder
+# then changes to the directory that has the same name as the container
+# the loop will get all *.tif  & *.jpg files
+# checks to see if there is a pdf/txt
+# if they are missing one is produced
+# the output file name is to remain the name as the image being ocr'd
+
 Set-Location /OCR
 
 $path = hostname
