@@ -15,7 +15,7 @@ Set-Location /OCR/$path
 $i=1
 Do {
 
-  foreach ($tif in get-ChildItem -Recurse *.tif) {
+  foreach ($tif in get-ChildItem -Recurse *.tif,*.jpg) {
     Echo $tif.name
     $dir = Split-Path -Path $tif -Resolve -Parent
     $name = $dir+"/"+[System.IO.Path]::GetFileNameWithoutExtension("$tif")
