@@ -1,39 +1,39 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ocr-dev-chi
+  name: ocr-chi
 spec:
   replicas: 1
-  serviceName: ocr-statefulset-dev-chi
+  serviceName: ocr-statefulset-chi
   selector:
     matchLabels:
-      app: ocr-dev-chi
+      app: ocr-chi
   template:
     metadata:
       labels:
-        app: ocr-dev-chi
+        app: ocr-chi
     spec:
       volumes:
-      - name: ocr-statefulset-dev-chi
+      - name: ocr-statefulset-chi
         persistentVolumeClaim:
-          claimName: ocr-statefulset-dev-chi
+          claimName: ocr-statefulset-chi
       containers:
       - name: ocr
-        image: patrickcurl/tesseract-pwsh-test:latest
+        image: patrickcurl/tesseract-pwsh:latest
         imagePullPolicy: "Always"
         command:
         - pwsh
-        - /scripts/ocr-statefulset-chi.ps1
+        - /scripts/OCR-statefulset-chi.ps1
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: ocr-statefulset-dev-chi
+        - name: ocr-statefulset-chi
           mountPath: "/OCR"
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ocr-statefulset-dev-chi
+  name: ocr-statefulset-chi
 spec:
   capacity:
     storage: 2048Gi
@@ -47,9 +47,9 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: ocr-statefulset-dev-chi  # make sure it's a unique id
+    volumeHandle: ocr-statefulset-chi  # make sure it's a unique id
     volumeAttributes:
-      source: "//hvcro02.advcro.local/K8s/ocr-statefulset-dev-chi"
+      source: "//hvcro02.advcro.local/K8s/ocr-statefulset-chi"
     nodeStageSecretRef:
       name: smbcreds
       namespace: default
@@ -57,11 +57,11 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: ocr-statefulset-dev-chi
+  name: ocr-statefulset-chi
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1024Gi
-  volumeName: ocr-statefulset-dev-chi
+  volumeName: ocr-statefulset-chi
