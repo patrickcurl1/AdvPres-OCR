@@ -23,7 +23,7 @@ spec:
         imagePullPolicy: "Always"
         command:
         - pwsh
-        - /scripts/ocr-statefulset-chi.ps1
+        - /scripts/OCR-statefulset-chi.ps1
         ports:
         - containerPort: 80
         volumeMounts:
