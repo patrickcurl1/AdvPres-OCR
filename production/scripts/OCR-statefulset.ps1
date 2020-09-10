@@ -49,15 +49,21 @@ Do {
     }
 
     if ($pdf -eq '1' -AND $txt -eq '1') {
-    tesseract $tif $name -l eng --psm 4 txt pdf
+      date
+      tesseract $tif $name -l eng --psm 4 txt pdf
+      date
     }
 
     if ($pdf -eq '0' -AND $txt -eq '1') {
-    tesseract $tif $name -l eng --psm 4 txt
+      date
+      tesseract $tif $name -l eng --psm 4 txt
+      date
     }
 
     if ($pdf -eq '1' -AND $txt -eq '0') {
-    tesseract $tif $name -l eng --psm 4 pdf
+      date
+      tesseract $tif $name -l eng --psm 4 pdf
+      date
     }
 }
 }
