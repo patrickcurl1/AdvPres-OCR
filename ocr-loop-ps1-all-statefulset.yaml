@@ -51,7 +51,7 @@ spec:
     volumeAttributes:
       source: "//filcro27.advcro.local/K8s/ocr-statefulset"
     nodeStageSecretRef:
-      name: smbcreds
+      name: filcro27
       namespace: default
 ---
 kind: PersistentVolumeClaim
