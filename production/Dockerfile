@@ -4,7 +4,7 @@ ARG imageRepo=ubuntu
 ARG RELEASE=latest
 
 # Docker image file that describes an Ubuntu18.04 image with PowerShell installed from Microsoft APT Repo
-ARG fromTag=18.04
+ARG fromTag=20.04
 ARG imageRepo=ubuntu
 
 #FROM ${imageRepo}:${fromTag} AS installer-env
