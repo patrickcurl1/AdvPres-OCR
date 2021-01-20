@@ -15,8 +15,14 @@ spec:
     spec:
       volumes:
       - name: ocr-statefulset-test
-        persistentVolumeClaim:
-          claimName: ocr-statefulset-test
+        flexVolume:
+          driver: "fstab/cifs"
+          fsType: "cifs"
+          secretRef:
+            name: "cifs-secret"
+          options:
+            networkPath: "//filcro27/K8s/K8s/ocr-statefulset-test"
+            mountOptions: "dir_mode=0755,file_mode=0644,noperm"
       containers:
       - name: ocr
         image: patrickcurl/tesseract-pwsh:latest
@@ -29,40 +35,3 @@ spec:
         volumeMounts:
         - name: ocr-statefulset-test
           mountPath: "/OCR"
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: ocr-statefulset-test
-spec:
-  capacity:
-    storage: 2048Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  mountOptions:
-    - dir_mode=0777
-    - file_mode=0777
-    - vers=3.0
-  csi:
-    driver: fstab/cifs
-    readOnly: false
-    volumeHandle: ocr-statefulset-test  # make sure it's a unique id
-    volumeAttributes:
-      source: "//192.168.0.116/K8s/ocr-statefulset-test"
-    nodeStageSecretRef:
-      name: "cifs-secret"
-      namespace: default
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: ocr-statefulset-test
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1024Gi
-  volumeName: ocr-statefulset-test
-  storageClassName: ""
