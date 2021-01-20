@@ -49,7 +49,7 @@ spec:
     readOnly: false
     volumeHandle: ocr-statefulset-test  # make sure it's a unique id
     volumeAttributes:
-      source: "//filcro27.advcro.local/K8s/ocr-statefulset-test"
+      source: "//192.168.0.116/K8s/ocr-statefulset-test"
     nodeStageSecretRef:
       name: "cifs-secret"
       namespace: default
