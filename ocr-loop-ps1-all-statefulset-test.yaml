@@ -45,7 +45,7 @@ spec:
     - file_mode=0777
     - vers=3.0
   csi:
-    driver: "fstab/cifs"
+    driver: fstab/cifs
     readOnly: false
     volumeHandle: ocr-statefulset-test  # make sure it's a unique id
     volumeAttributes:
