@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ocr
+spec:  
+  replicas: 1
+  serviceName: ocr-statefulset-test
+  selector:
+    matchLabels:
+      app: ocr
+  template:
+    metadata:
+      labels:
+        app: ocr
+    spec:
+      volumes:
+      - name: ocr-statefulset-test
+        persistentVolumeClaim:
+          claimName: ocr-statefulset-test
+      containers:
+      - name: ocr
+        image: patrickcurl/tesseract-pwsh:latest
+        imagePullPolicy: "Always"
+        command:
+        - pwsh
+        - /scripts/OCR-statefulset.ps1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: ocr-statefulset-test
+          mountPath: "/OCR"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ocr-statefulset-test
+spec:
+  capacity:
+    storage: 2048Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - vers=3.0
+  csi:
+    driver: "fstab/cifs"
+    fsType: "cifs"
+    readOnly: false
+    volumeHandle: ocr-statefulset-test  # make sure it's a unique id
+    volumeAttributes:
+      source: "//filcro27.advcro.local/K8s/ocr-statefulset-test"
+    nodeStageSecretRef:
+      name: "cifs-secret"
+      namespace: default
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ocr-statefulset-test
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1024Gi
+  volumeName: ocr-statefulset-test
+  storageClassName: ""
