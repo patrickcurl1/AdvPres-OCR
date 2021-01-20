@@ -21,7 +21,7 @@ spec:
           secretRef:
             name: "cifs-secret"
           options:
-            networkPath: "//filcro27/K8s/K8s/ocr-statefulset-test"
+            networkPath: "//filcro27/K8s/ocr-statefulset-test"
             mountOptions: "dir_mode=0755,file_mode=0644,noperm"
       containers:
       - name: ocr
