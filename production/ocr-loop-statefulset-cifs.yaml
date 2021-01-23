@@ -21,7 +21,7 @@ spec:
         effect: NoSchedule
       containers:
         - image: patrickcurl/tesseract-pwsh:latest
-          name: ocr-statefulset
+          name: ocr
           securityContext:
             privileged: true
           command:
