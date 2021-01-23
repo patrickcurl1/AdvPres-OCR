@@ -62,6 +62,6 @@ spec:
    fsType: cifs
    options:
      mountOptions: 'file_mode=0770,dir_mode=0770'
-     networkPath: //filcro27.advcro.local/K8s/ocr-statefulset
+     networkPath: //filcro27.advcro.local/K8s/ocr
    secretRef:
      name: cifs-secret
