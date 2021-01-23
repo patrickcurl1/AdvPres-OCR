@@ -1,39 +1,34 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ocr-statefulset
-spec:
+  name: ocr
+spec:  
   replicas: 1
   serviceName: ocr-statefulset
   selector:
     matchLabels:
-      app: ocr-statefulset
+      app: ocr
   template:
     metadata:
-      name: ocr-statefulset
       labels:
-        app: ocr-statefulset
+        app: ocr
     spec:
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-      - key: com.docker.ucp.manager
-        effect: NoSchedule
-      containers:
-        - image: patrickcurl/tesseract-pwsh:latest
-          name: ocr
-          securityContext:
-            privileged: true
-          command:
-          - pwsh
-          - /scripts/OCR-statefulset.ps1
-          volumeMounts:
-            - mountPath: /OCR
-              name: ocr-statefulset
       volumes:
+      - name: ocr-statefulset
+        persistentVolumeClaim:
+          claimName: ocr-statefulset
+      containers:
+      - name: ocr
+        image: patrickcurl/tesseract-pwsh:latest
+        imagePullPolicy: "Always"
+        command:
+        - pwsh
+        - /scripts/OCR-statefulset.ps1
+        ports:
+        - containerPort: 80
+        volumeMounts:
         - name: ocr-statefulset
-          persistentVolumeClaim:
-            claimName: ocr-statefulset
+          mountPath: "/OCR"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
