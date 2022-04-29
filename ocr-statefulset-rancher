@@ -17,6 +17,7 @@ spec:
       - ip: "10.1.1.3"
         hostnames:
         - "data.advcro.local"
+        hostnames:
         - "data"
       tolerations:
       - effect: NoSchedule
